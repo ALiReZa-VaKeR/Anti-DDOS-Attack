@@ -1,24 +1,33 @@
 <?php
 
 session_start();
-
 define('FILE_BLOCK_IPS', 'BLOCK_IP.txt');
+define('REDIRECT_LINK', './403.html');
+define('REDIRECT_HOME_PAGE', 'success.php');
 
-// $user_ip = $_SESSION['user_ip'] = $_SERVER['REMOTE_ADDR'];
+if (!file_exists(FILE_BLOCK_IPS)) {
+    fopen(FILE_BLOCK_IPS, "w");
+}
 
-print(filesize(FILE_BLOCK_IPS));
-
+$p1 = "در حال بررسی درخواست ...";
+$p2 =  "در حال انتقال به صفحه مورد نظر ...";
 $user_ip = "127.0.0.1";
 if ($_SESSION['time_request'] > time() - 4) {
-    echo "Blocked IP =>" . $user_ip;
+    header('Location:' . REDIRECT_LINK);
+    return;
     $f = fopen(FILE_BLOCK_IPS, "a");
-    if (findIPinBlockListIP() == true ||  filesize(FILE_BLOCK_IPS) <= 0) {
+    if (findIPinBlockListIP() != true && filesize(FILE_BLOCK_IPS) <= 1) {
         fwrite($f, $user_ip . " - ");
     }
 }
 
+
 $_SESSION['time_request'] = time();
-// جلوگیری از ثبت مجدد IP
+
+// Redirect Success
+$_SESSION['status'] = "success/1";
+print '<script> sessionStorage.setItem("status", "' . $_SESSION['status'] . '");</script>';
+
 
 function findIPinBlockListIP()
 {
