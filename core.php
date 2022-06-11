@@ -1,9 +1,13 @@
 <?php
 
-session_start();
-define('FILE_BLOCK_IPS', 'BLOCK_IP.txt');
-define('REDIRECT_LINK', './403.html');
-define('REDIRECT_HOME_PAGE', 'success.php');
+
+if (!isset($_SESSION)) {
+    session_start();
+}
+define('FILE_BLOCK_IPS', 'BLOCK_IP.txt'); // فایل لیست سیاه
+define('REDIRECT_LINK', './403.html'); // لینک صفحه 403
+define('REDIRECT_HOME_PAGE', 'success.php'); // لینک صفحه اصلی سایت
+define('TIMEOUT_REQUEST', 5); //تنظیم تعداد درخواست (مقدار پیش فرض 5 میباشد)
 
 if (!file_exists(FILE_BLOCK_IPS)) {
     fopen(FILE_BLOCK_IPS, "w");
@@ -12,10 +16,10 @@ if (!file_exists(FILE_BLOCK_IPS)) {
 $p1 = "در حال بررسی درخواست ...";
 $p2 =  "در حال انتقال به صفحه مورد نظر ...";
 $user_ip = "127.0.0.1";
-if ($_SESSION['time_request'] > time() - 4) {
+if ($_SESSION['time_request'] > time() - TIMEOUT_REQUEST) {
     header('Location:' . REDIRECT_LINK);
     return;
-    $f = fopen(FILE_BLOCK_IPS, "a");
+    $f = fopen(FILE_BLOCK_IPS, "a+");
     if (findIPinBlockListIP() != true && filesize(FILE_BLOCK_IPS) <= 1) {
         fwrite($f, $user_ip . " - ");
     }

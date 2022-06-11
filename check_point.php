@@ -2,14 +2,10 @@
 require "./core.php";
 
 
+
 $ApiLocation = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip={$user_ip}"));
 $location = $ApiLocation->geoplugin_countryCode;
-if ($location != null) {
-    $location = $location;
-} else {
-    $location = "";
-}
-
+ 
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="rtl">
@@ -51,7 +47,7 @@ if ($location != null) {
 
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <script src="./assets/js/pace.js"></script>
-    <script>
+    <!-- <script>
         setTimeout(() => {
             document.getElementById("proccess").innerHTML = "<?php echo $p1; ?>"
         }, 3000);
@@ -80,7 +76,7 @@ if ($location != null) {
         }
 
         var cancel = setInterval(incrementSeconds, 1000);
-    </script>
+    </script> -->
 </body>
 
 </html>
